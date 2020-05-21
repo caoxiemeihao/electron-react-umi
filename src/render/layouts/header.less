@@ -1,0 +1,101 @@
+.layout-top-eader {
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  padding: 0;
+  color: white;
+
+  .logo {
+    position: relative;
+    height: var(--header-height);
+    width: var(--side-width);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 400ms;
+
+    &.collapsed {
+      width: var(--side-collapsed-width);
+
+      .btn {
+        left: 100%;
+      }
+    }
+
+    h1 {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 44px;
+      height: 44px;
+      margin: 0;
+      border-radius: 22px;
+      border: 1px solid #ddd;
+
+      span {
+        color: white;
+        font-size: 24px;
+      }
+    }
+
+    .btn {
+      position: absolute;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      transform: 150ms;
+    }
+  }
+
+  .header-shop-box {
+    margin: 0 10px;
+
+    .shop-name {
+      width: 200px;
+      padding: 0 9px;
+      line-height: 34px;
+      border-radius: 4px;
+      box-shadow: 0 0 1px #ccc;
+    }
+
+    .ant-select {
+      width: 200px;
+    }
+  }
+
+  .header-devtool {
+    display: flex;
+    align-items: center;
+    line-height: initial;
+    transition: 400ms;
+
+    &.collapsed {
+      margin-left: 62px;
+    }
+
+    .btn-group {
+      padding: 4px;
+      border-radius: 4px;
+      border: 1px solid white;
+
+      .anticon {
+        margin-left: 9px;
+        padding: 4px;
+        border-radius: 100%;
+        border: 1px solid #ddd;
+
+        &:hover {
+          color: #ff6f6c;
+          border-color: #ff6f6c;
+        }
+
+        &:first-child {
+          margin-left: 0;
+        }
+      }
+    }
+
+    .href {
+      // font-size: 13px;
+    }
+  }
+}

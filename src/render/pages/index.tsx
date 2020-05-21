@@ -1,0 +1,11 @@
+import React from 'react';
+import styles from './index.less';
+import yay from '@/assets/yay.jpg';
+
+export default () => {
+  return (
+    <div className={styles.page} style={{ backgroundImage: `url(${yay})` }}>
+      <div className="author">关于作者:</div>
+    </div>
+  );
+};

@@ -10,16 +10,16 @@
     "baseUrl": "./",
     "strict": true,
     "paths": {
-      "@/*": ["src/*"],
-      "@@/*": ["src/.umi/*"]
+      "@/*": ["src/render/*"],
+      "@@/*": ["src/render/.umi/*"]
     },
     "allowSyntheticDefaultImports": true
   },
   "include": [
-    "mock/**/*",
+    "src/render/mock/**/*",
     "src/**/*",
     "config/**/*",
-    ".umirc.ts",
-    "typings.d.ts"
+    "src/render/.umirc.ts",
+    "typings"
   ]
 }
