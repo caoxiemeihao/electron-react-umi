@@ -19,5 +19,14 @@
 **/.umi-test
 /.env.local
 
-**/tmp
+# 忽略一些自动生成文件
 **/.tmp
+**/tmp
+**/dist
+.DS_Store
+.idea
+release
+**/bundle.js
+**/bundle.js.map
+src/main/_.js
+src/main/_.js.map

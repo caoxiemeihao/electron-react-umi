@@ -1,8 +1,16 @@
 {
-  "private": true,
+  "name": "anan",
+  "version": "1.0.0",
+  "main": "src/main/_.js",
+  "author": "草鞋没号 <308487730@qq.com>",
+  "license": "MIT",
   "scripts": {
-    "start": "cross-env APP_ROOT=src/render umi dev",
-    "build": "cross-env APP_ROOT=src/render umi build",
+    "start": "npm run dev:all",
+    "dev:all": "concurrently -n=umi,ele -c=blue,green \"cross-env APP_ROOT=src/render umi dev\" \"npm run electron:dev\"",
+    "---- webpack 构建 bundle.js electron-webpack ----": "---- webpack 构建 bundle.js ----",
+    "electron:build": "node scripts/main-build --env=production",
+    "electron:dev": "node scripts/main-build --env=development --watch",
+    "---- umi ---": "---- 自带的一些处理脚本 ----",
     "postinstall": "umi generate tmp",
     "prettier": "prettier --write '**/*.{js,jsx,tsx,ts,less,md,json}'",
     "test": "umi-test",
@@ -19,22 +27,71 @@
       "prettier --parser=typescript --write"
     ]
   },
+  "build": {
+    "files": [
+      "!node_modules",
+      "src/main",
+      "src/dist"
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64",
+            "ia32"
+          ]
+        }
+      ],
+      "artifactName": "${productName}_setup_${version}.${ext}"
+    },
+    "directories": {
+      "output": "release"
+    },
+    "extends": null,
+    "productName": "caoxie",
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "deleteAppDataOnUninstall": false
+    }
+  },
+  "keywords": [
+    "electron",
+    "react",
+    "typescript",
+    "umi"
+  ],
   "dependencies": {
-    "@umijs/preset-react": "1.x",
-    "@umijs/test": "^3.2.2",
+    "@ant-design/icons": "^4.1.0",
     "axios": "^0.19.2",
     "classnames": "^2.2.6",
-    "lint-staged": "^10.0.7",
-    "prettier": "^1.19.1",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
-    "umi": "^3.2.2",
-    "yorkie": "^2.0.0"
+    "umi": "^3.2.2"
   },
   "devDependencies": {
     "@types/axios": "^0.14.0",
     "@types/classnames": "^2.2.10",
+    "@umijs/preset-react": "1.x",
+    "@umijs/test": "^3.2.2",
+    "chalk": "^4.0.0",
+    "concurrently": "^5.2.0",
     "cross-env": "^7.0.2",
-    "mockjs": "^1.1.0"
+    "dotenv": "^8.2.0",
+    "electron": "^9.0.0",
+    "electron-builder": "^22.6.1",
+    "electron-connect": "^0.6.3",
+    "electron-is-dev": "^1.2.0",
+    "electron-updater": "^4.3.1",
+    "lint-staged": "^10.0.7",
+    "minimist": "^1.2.5",
+    "mockjs": "^1.1.0",
+    "ora": "^4.0.4",
+    "prettier": "^1.19.1",
+    "wait-on": "^5.0.0",
+    "webpack": "^4.43.0",
+    "yorkie": "^2.0.0"
   }
 }

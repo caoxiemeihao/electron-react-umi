@@ -23,7 +23,7 @@ export default {
   hash: true,
   // url 格式
   history: {
-    type: 'hash',
+    type: 'browser',
   },
   // script、link 标签资源引入路径
   publicPath: './',
