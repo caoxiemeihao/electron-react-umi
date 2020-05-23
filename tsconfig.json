@@ -19,7 +19,6 @@
     "src/render/mock/**/*",
     "src/**/*",
     "config/**/*",
-    "src/render/.umirc.ts",
-    "typings"
+    "src/render/.umirc.ts"
   ]
 }

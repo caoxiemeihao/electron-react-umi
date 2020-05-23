@@ -3,6 +3,7 @@
  */
 import React, { useState, useEffect, useMemo } from 'react';
 import { Menu } from 'antd';
+import { SiderTheme } from 'antd/lib/layout/Sider';
 import { useHistory } from 'umi';
 import menus, { IMenu } from '@/config/menus';
 import styles from './index.less';
@@ -22,11 +23,12 @@ function getSubMenus(pathname: string): string[] {
   return [path];
 }
 
-export default () => {
+export default (props: { theme: SiderTheme }) => {
   const history = useHistory();
   const { location } = history;
   const [keys, setKeys] = useState([] as Array<string>);
   const [openKeys, setOpenKeys] = useState<any[]>([]);
+  const { theme } = props;
 
   const clickMenu = ({ key }: any) => {
     history.push(key);
@@ -86,7 +88,7 @@ export default () => {
   return (
     <Menu
       mode="inline"
-      theme="dark"
+      theme={theme}
       selectedKeys={keys}
       onClick={clickMenu}
       openKeys={openKeys}

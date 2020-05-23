@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card } from 'antd';
+import { Card, Alert } from 'antd';
 import { connect } from 'umi';
 import { ConnectProps } from 'umi/types';
 import TableList from './components/TableList';
@@ -25,6 +25,7 @@ const Foo = (props: IProps) => {
 
   return (
     <Card>
+      <Alert type="success" className="mb-3" message="这里是开发期练手的 😋" />
       <TableList dataSource={data} loading={props.loading} />
     </Card>
   );

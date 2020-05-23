@@ -11,17 +11,15 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    z-index: 1;
     transition: 400ms;
 
     &.collapsed {
       width: var(--side-collapsed-width);
-
-      .btn {
-        left: 100%;
-      }
     }
 
     h1 {
+      position: relative;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -29,20 +27,20 @@
       height: 44px;
       margin: 0;
       border-radius: 22px;
-      border: 1px solid #ddd;
+      box-shadow: 0 0 4px #ddd;
+      overflow: hidden;
+      font-size: 0;
 
       span {
         color: white;
         font-size: 24px;
       }
-    }
 
-    .btn {
-      position: absolute;
-      right: 0;
-      top: 50%;
-      transform: translateY(-50%);
-      transform: 150ms;
+      img {
+        width: 100%;
+        position: absolute;
+        top: 0;
+      }
     }
   }
 
@@ -66,22 +64,16 @@
     display: flex;
     align-items: center;
     line-height: initial;
-    transition: 400ms;
-
-    &.collapsed {
-      margin-left: 62px;
-    }
 
     .btn-group {
       padding: 4px;
       border-radius: 4px;
-      border: 1px solid white;
+      border: 1px solid #ddd;
 
       .anticon {
         margin-left: 9px;
         padding: 4px;
         border-radius: 100%;
-        border: 1px solid #ddd;
 
         &:hover {
           color: #ff6f6c;
@@ -96,6 +88,24 @@
 
     .href {
       // font-size: 13px;
+    }
+  }
+}
+
+.light .layout-top-eader {
+  box-shadow: 0 0 2px #ddd;
+
+  .logo {
+    box-shadow: -1px 0 1px #cccccc;
+  }
+
+  .header-devtool {
+    .btn-group {
+      background-color: #ddd;
+    }
+
+    .href {
+      color: #999;
     }
   }
 }

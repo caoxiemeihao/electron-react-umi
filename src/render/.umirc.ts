@@ -29,11 +29,10 @@ export default {
   publicPath: './',
   // antd 主题配置
   theme: {
-    '@primary-color': '#A14EFF',
-    '@link-color': '#A14EFF',
+    '@primary-color': '#FF7700',
+    '@link-color': '#FF7700',
     '@font-family': '"futura-pt", sans-serif',
-    '@line-height-base': '1.3',
-    '@border-radius-base': '6px',
+    '@font-size-base': '12px',
   },
   // 路径别名
   alias: {
