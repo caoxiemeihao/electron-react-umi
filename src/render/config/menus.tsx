@@ -2,7 +2,11 @@
  * 左侧菜单配置
  */
 import React from 'react';
-import { AreaChartOutlined } from '@ant-design/icons';
+import {
+  AreaChartOutlined,
+  FileImageOutlined,
+  SearchOutlined,
+} from '@ant-design/icons';
 
 export interface IMenu {
   title: string;
@@ -23,12 +27,21 @@ export default [
           subs: [
             {
               title: 'Foo',
-              path: '/Foo',
-              fullPath: '/Foo',
+              path: '/foo',
               icon: <AreaChartOutlined />,
             },
           ],
         },
       ]
     : []),
+  {
+    path: '/excel-down',
+    title: 'excel 图片下载',
+    icon: <FileImageOutlined />,
+  },
+  {
+    path: '/source-utils',
+    title: '搜品助手',
+    icon: <SearchOutlined />,
+  },
 ] as Array<IMenu>;

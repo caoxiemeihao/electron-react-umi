@@ -89,9 +89,9 @@ export default (props: { theme: SiderTheme }) => {
     <Menu
       mode="inline"
       theme={theme}
-      selectedKeys={keys}
+      // selectedKeys={keys}
       onClick={clickMenu}
-      openKeys={openKeys}
+      // openKeys={openKeys}
       onOpenChange={handleOpenChange}
       className={styles.menu}
     >
