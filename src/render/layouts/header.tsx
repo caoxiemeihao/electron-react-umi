@@ -15,19 +15,16 @@ import {
 import cls from 'classnames';
 import './header.less';
 
-const isDev = process.env.NODE_ENV === 'development';
-
 export interface IProps {
   clickCollapse: () => void;
   collapsed: boolean;
   theme: SiderTheme;
-  clickTheme: () => void;
 }
 
 const { Header } = Layout;
 
 const HeaderComponent: React.FC<IProps> = props => {
-  const { collapsed, clickCollapse, theme, clickTheme } = props;
+  const { collapsed, clickCollapse, theme } = props;
   const history = useHistory();
   const isLight = theme === 'light';
 
@@ -51,7 +48,9 @@ const HeaderComponent: React.FC<IProps> = props => {
         <ArrowRightOutlined onClick={() => history.goForward()} />
         <ReloadOutlined onClick={() => window.location.reload(true)} />
       </div>
-      <div className="href ml-2">{location.href}</div>
+      <div className={cls('href ml-2', { production: !window.G.isDev })}>
+        {location.href}
+      </div>
     </div>
   );
 
@@ -68,12 +67,6 @@ const HeaderComponent: React.FC<IProps> = props => {
           </h1>
         </div>
         <div className="flex-fill">{devtool}</div>
-        <div className="pr-3">
-          <span className="mr-2" style={{ color: isLight ? '#999' : '#ddd' }}>
-            切换主题
-          </span>
-          <Switch size="small" onChange={clickTheme} checked={isLight} />
-        </div>
       </div>
     </Header>
   );

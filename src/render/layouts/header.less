@@ -86,8 +86,12 @@
       }
     }
 
-    .href {
-      // font-size: 13px;
+    .href.production {
+      color: transparent;
+
+      &:hover {
+        color: #999;
+      }
     }
   }
 }
@@ -103,9 +107,9 @@
     .btn-group {
       background-color: #ddd;
     }
+  }
 
-    .href {
-      color: #999;
-    }
+  .href {
+    color: #999;
   }
 }

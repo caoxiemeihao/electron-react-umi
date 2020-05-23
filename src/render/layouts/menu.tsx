@@ -2,15 +2,20 @@
  * 左侧菜单
  */
 import React, { useState, useEffect, useMemo } from 'react';
-import { Menu } from 'antd';
+import { Menu, Switch } from 'antd';
 import { SiderTheme } from 'antd/lib/layout/Sider';
 import { useHistory } from 'umi';
 import menus, { IMenu } from '@/config/menus';
-import styles from './index.less';
+import styles from './menu.less';
 
 const { SubMenu, Item } = Menu;
 const subMenus: string[] = [];
 const leafMenus: string[] = [];
+
+export interface IProps {
+  theme: SiderTheme;
+  clickTheme: () => void;
+}
 
 // 获取所有父菜单的list
 function getSubMenus(pathname: string): string[] {
@@ -23,12 +28,13 @@ function getSubMenus(pathname: string): string[] {
   return [path];
 }
 
-export default (props: { theme: SiderTheme }) => {
+export default (props: IProps) => {
   const history = useHistory();
   const { location } = history;
   const [keys, setKeys] = useState([] as Array<string>);
   const [openKeys, setOpenKeys] = useState<any[]>([]);
-  const { theme } = props;
+  const { theme, clickTheme } = props;
+  const isLight = theme === 'light';
 
   const clickMenu = ({ key }: any) => {
     history.push(key);
@@ -86,16 +92,23 @@ export default (props: { theme: SiderTheme }) => {
   }, [location.pathname]);
 
   return (
-    <Menu
-      mode="inline"
-      theme={theme}
-      // selectedKeys={keys}
-      onClick={clickMenu}
-      // openKeys={openKeys}
-      onOpenChange={handleOpenChange}
-      className={styles.menu}
-    >
-      {generate(menus)}
-    </Menu>
+    <div className={styles.menu}>
+      <Menu
+        mode="inline"
+        theme={theme}
+        // selectedKeys={keys}
+        onClick={clickMenu}
+        // openKeys={openKeys}
+        onOpenChange={handleOpenChange}
+      >
+        {generate(menus)}
+      </Menu>
+      <div className="switch-theme">
+        <span className="mr-1" style={{ color: isLight ? '#999' : '#ddd' }}>
+          主题
+        </span>
+        <Switch size="small" onChange={clickTheme} checked={isLight} />
+      </div>
+    </div>
   );
 };

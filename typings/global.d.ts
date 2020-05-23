@@ -5,10 +5,9 @@ declare namespace NodeJS {
   }
 }
 
-declare namespace global {
-  interface Window {
-    G: {
-      isDev: boolean;
-    };
-  }
+interface Window {
+  G: {
+    /** 是否为开发环境 */
+    isDev: boolean;
+  };
 }

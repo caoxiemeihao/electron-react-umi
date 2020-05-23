@@ -1,4 +1,21 @@
 .menu {
+  position: relative;
   height: calc(100vh - var(--header-height));
   overflow-y: auto;
+
+  :global .switch-theme {
+    position: absolute;
+    bottom: 0;
+    padding: 8px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+  }
+}
+
+:global .light {
+  .switch-theme {
+    box-shadow: 0 0 1px #ccc;
+  }
 }

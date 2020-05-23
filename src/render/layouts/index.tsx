@@ -45,7 +45,7 @@ const BasicLayout: React.FC = (props: any) => {
       <Layout>
         {/* 左侧菜单 */}
         <Sider theme={theme} collapsed={collapsed}>
-          <SideMenu theme={theme} />
+          <SideMenu theme={theme} clickTheme={clickTheme} />
         </Sider>
 
         {/* 右侧 content */}
