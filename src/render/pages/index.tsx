@@ -4,8 +4,6 @@ import yay from '@/assets/yay.jpg';
 
 export default () => {
   return (
-    <div className={styles.page} style={{ backgroundImage: `url(${yay})` }}>
-      <div className="author">关于作者:</div>
-    </div>
+    <div className={styles.page} style={{ backgroundImage: `url(${yay})` }} />
   );
 };

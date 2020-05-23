@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react';
 import { useHistory } from 'umi';
-// import { ipcRenderer } from 'electron'
+import { ipcRenderer } from 'electron';
 import { Layout } from 'antd';
 import {
   MenuUnfoldOutlined,
@@ -29,7 +29,7 @@ const HeaderComponent: React.FC<IProps> = props => {
   const devtool = (
     <div className={cls('header-devtool', { collapsed })}>
       <div className="btn-group">
-        {/* <ControlOutlined onClick={() => ipcRenderer.send('toggle-devtool')} /> */}
+        <ControlOutlined onClick={() => ipcRenderer.send('toggle-devtools')} />
         <ArrowLeftOutlined onClick={() => history.goBack()} />
         <ArrowRightOutlined onClick={() => history.goForward()} />
         <ReloadOutlined onClick={() => window.location.reload(true)} />

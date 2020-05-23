@@ -4,8 +4,8 @@ const isDev = process.env.YPSHOP_ENV === 'development';
 const isProd = process.env.YPSHOP_ENV === 'production';
 const resolvePath = (dir: string) => path.join(__dirname, dir);
 
-const webpack_dev = (config: any) => config.devtool('eval-source-map');
-// .target('electron-renderer')
+const webpack_dev = (config: any) =>
+  config.devtool('eval-source-map').target('electron-renderer');
 
 const webpack_prod = (config: any) => config.target('electron-renderer');
 
