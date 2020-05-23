@@ -29,4 +29,6 @@ export default {
   theme: 'THEM',
   /** 是否收起菜单 */
   collapsed: 'COLLAPSED',
+  /** excel 图片下载位置 */
+  pod_img_save_path: 'POD_IMG_SAVE_PATH',
 };

@@ -2,12 +2,24 @@ const path = require('path');
 
 const isDev = process.env.YPSHOP_ENV === 'development';
 const isProd = process.env.YPSHOP_ENV === 'production';
-const resolvePath = (dir: string) => path.join(__dirname, dir);
+const resolvePath = (...args: Array<string>) => path.join(__dirname, ...args);
 
 const webpack_dev = (config: any) =>
-  config.devtool('eval-source-map').target('electron-renderer');
+  config
+    .devtool('eval-source-map') // 能看懂的 source-map
+    .target('electron-renderer')
+    .node.set('fs', false)
+    .set('__dirname', false)
+    .set('__filename', false)
+    .set('child_process', false);
 
-const webpack_prod = (config: any) => config.target('electron-renderer');
+const webpack_prod = (config: any) =>
+  config
+    .target('electron-renderer')
+    .node.set('fs', false)
+    .set('__dirname', false)
+    .set('__filename', false)
+    .set('child_process', false);
 
 const chainWebpack = (config: any) =>
   isProd ? webpack_prod(config) : webpack_dev(config);
@@ -38,5 +50,6 @@ export default {
   alias: {
     '@': resolvePath(''),
     '@@': resolvePath('.umi'),
+    root: resolvePath('..', '..'), // 项目根目录
   },
 };
