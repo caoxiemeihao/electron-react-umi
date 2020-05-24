@@ -6,7 +6,8 @@
   "license": "MIT",
   "scripts": {
     "start": "npm run dev:all",
-    "dev:all": "concurrently -n=umi,ele -c=blue,green \"cross-env APP_ROOT=src/render umi dev\" \"npm run electron:dev\"",
+    "dev:umi": "cross-env APP_ROOT=src/render umi dev",
+    "dev:all": "concurrently -n=umi,ele -c=blue,green \"npm run dev:umi\" \"npm run electron:dev\"",
     "---- webpack 构建 bundle.js electron-webpack ----": "---- webpack 构建 bundle.js ----",
     "electron:build": "node scripts/main-build --env=production",
     "electron:dev": "node scripts/main-build --env=development --watch",

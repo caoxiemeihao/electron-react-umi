@@ -5,7 +5,6 @@ import React, { useState, useEffect } from 'react';
 import { Alert, Button, message } from 'antd';
 import { ipcRenderer as ipc } from 'electron';
 import XLSX from 'xlsx';
-import {} from '@/utils/xlsx';
 import { chooseFile } from '@/utils';
 import store from '@/utils/store';
 import { getUseful } from './utils';
