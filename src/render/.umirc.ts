@@ -1,7 +1,7 @@
 const path = require('path');
 
-const isDev = process.env.YPSHOP_ENV === 'development';
-const isProd = process.env.YPSHOP_ENV === 'production';
+const isDev = process.env.NODE_ENV === 'development';
+const isProd = process.env.NODE_ENV === 'production';
 const resolvePath = (...args: Array<string>) => path.join(__dirname, ...args);
 
 const webpack_dev = (config: any) =>

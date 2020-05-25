@@ -7,7 +7,7 @@ import { ipcRenderer as ipc } from 'electron';
 import XLSX from 'xlsx';
 import { chooseFile } from '@/utils';
 import store from '@/utils/store';
-import { getUseful } from './utils';
+import { parse } from './utils/parse';
 import styles from './index.less';
 
 const img_path = store.pod_img_save_path;
@@ -31,7 +31,11 @@ const ExcelDown: React.FC<any> = () => {
 
   useEffect(() => {
     if (workbook) {
-      getUseful(workbook);
+      parse(workbook).then(([err, data]) => {
+        if (!err) {
+          console.log(data);
+        }
+      });
     }
   }, [workbook]);
 
