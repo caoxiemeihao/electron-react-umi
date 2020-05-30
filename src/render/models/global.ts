@@ -6,6 +6,13 @@ export interface GlobalState {
   theme: SiderTheme;
 }
 
+/** 切换主题 */
+function switchThem(theme: SiderTheme = store.get(store.theme)) {
+  document.body.classList.remove('dark');
+  document.body.classList.remove('light');
+  document.body.classList.add(theme);
+}
+
 export default {
   namespace: 'global',
   state: {
@@ -13,9 +20,7 @@ export default {
   } as GlobalState,
   reducers: {
     theme(state: any, { theme }: { theme: SiderTheme }) {
-      document.body.classList.remove('dark');
-      document.body.classList.remove('light');
-      document.body.classList.add(theme);
+      switchThem(theme);
       store.set(store.theme, theme);
       return { ...state, theme };
     },
@@ -24,6 +29,8 @@ export default {
     },
   },
   subscriptions: {
-    setup({ dispatch, history }: any) {},
+    setup({ dispatch, history }: any) {
+      switchThem();
+    },
   },
 };
