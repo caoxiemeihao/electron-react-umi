@@ -43,7 +43,9 @@ const HeaderComponent: React.FC<IProps> = props => {
             onClick={() => ipcRenderer.send('toggle-devtools')}
           />
         </Tooltip>
-        <WindowsOutlined onClick={() => history.push('/')} />
+        <Tooltip title="首页">
+          <WindowsOutlined onClick={() => history.push('/')} />
+        </Tooltip>
         <ArrowLeftOutlined onClick={() => history.goBack()} />
         <ArrowRightOutlined onClick={() => history.goForward()} />
         <ReloadOutlined onClick={() => window.location.reload(true)} />

@@ -1,8 +1,7 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { Layout } from 'antd';
 import { SiderTheme } from 'antd/lib/layout/Sider';
-import { useHistory, useLocation } from 'umi';
-import cls from 'classnames';
+import { useHistory, useLocation, useDispatch, useSelector } from 'umi';
 import store from '@/utils/store';
 import Header from './header';
 import SideMenu from './menu';
@@ -12,23 +11,21 @@ const { Content, Sider } = Layout;
 
 const BasicLayout: React.FC = (props: any) => {
   const location = useLocation();
-  const history = useHistory();
+  const dispatch = useDispatch();
   const [collapsed, setCollapsed] = useState(
     store.get(store.collapsed) || false,
   );
-  const [theme, setTheme] = useState<SiderTheme>(
-    store.get(store.theme) || 'light',
-  );
+  const {
+    global: { theme },
+  } = useSelector(({ global }: any) => ({ global }));
 
   const clickCollapse = () => setCollapsed(!collapsed);
-  const clickTheme = () => setTheme(theme === 'dark' ? 'light' : 'dark');
-
-  useEffect(() => {
-    document.body.classList.remove('dark');
-    document.body.classList.remove('light');
-    document.body.classList.add(theme);
-    store.set(store.theme, theme);
-  }, [theme]);
+  const clickTheme = () => {
+    dispatch({
+      type: 'global/theme',
+      theme: theme === 'dark' ? 'light' : 'dark',
+    });
+  };
 
   useEffect(() => {
     store.set(store.collapsed, collapsed);
@@ -40,7 +37,6 @@ const BasicLayout: React.FC = (props: any) => {
         collapsed={collapsed}
         clickCollapse={clickCollapse}
         theme={theme}
-        clickTheme={clickTheme}
       />
       <Layout>
         {/* 左侧菜单 */}
