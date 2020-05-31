@@ -1,11 +1,13 @@
 import XLSX from 'xlsx';
+import { PresetStatusColorType } from 'antd/lib/_util/colors';
 
 // ---- 19-11-14 ---- add 兼容 cj、shopify-uploadery
-enum EAttachmentType {
+export enum EAttachmentType {
   cj = 'cj-compatible',
   uploadery = 'shopify-uploadery',
 }
 
+/** 有用的表格列 */
 export interface IUsefulKeys {
   OrderNumber: string;
   SKU: string;
@@ -13,6 +15,7 @@ export interface IUsefulKeys {
   Attachment: string;
 }
 
+/** excel 提出数据 */
 export interface IUsefulItem {
   OrderNumber: string;
   SKU: string;
@@ -22,13 +25,25 @@ export interface IUsefulItem {
   error?: string;
 }
 
+/** excel 提出数据、加工多个 sku 后给表格用 */
+export interface TableItem {
+  OrderNumber: string;
+  SKU: string;
+  quantity: string;
+  AttachmentType: EAttachmentType;
+  Attachment: string; // 如果有错为 null
+  error?: string | Error;
+  process?: number; // 进度
+  status?: PresetStatusColorType; // 状态
+}
+
 /**
  * excel 解析
  * @param workbook
  */
 export function parse(
   workbook: XLSX.WorkBook,
-): Promise<[null | string, Array<IUsefulItem>]> {
+): Promise<[null | string, Array<TableItem>]> {
   // console.log(workbook)
 
   return new Promise(resolve => {
@@ -106,7 +121,7 @@ export function parse(
       });
 
       // ---- 19-06-08 mod 支持多 SKU --S--
-      let processedArr: Array<any> = [];
+      let processedArr: Array<TableItem> = [];
 
       usefulArr.forEach(row => {
         try {
@@ -136,7 +151,7 @@ export function parse(
             }));
           }
 
-          processedArr = processedArr.concat(tmpArr);
+          processedArr = processedArr.concat(tmpArr as Array<TableItem>);
         } catch (e) {
           console.error(
             `${JSON.stringify(row)}\nSKU加工失败，不会影响其他的图片下载`,
@@ -147,7 +162,7 @@ export function parse(
 
       resolve([null, processedArr]);
     } catch (e) {
-      resolve([e]);
+      resolve([e, []]);
       throw e;
     }
   });

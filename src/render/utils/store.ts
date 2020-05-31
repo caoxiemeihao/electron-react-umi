@@ -31,4 +31,6 @@ export default {
   collapsed: 'COLLAPSED',
   /** excel 图片下载位置 */
   pod_img_save_path: 'POD_IMG_SAVE_PATH',
+  /** 图片下载最大并发数 */
+  pod_img_down_max: 'POD_IMG_DOWN_MAX',
 };
