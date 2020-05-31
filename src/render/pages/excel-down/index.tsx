@@ -258,7 +258,10 @@ const ExcelDown: React.FC<any> = () => {
         <div className="d-flex">
           <Group>
             <Button onClick={clickChooseFile}>选择 excel 文件</Button>
-            <Button onClick={clickDownload} disabled={!list?.length || starred}>
+            <Button
+              onClick={() => clickDownload()}
+              disabled={!list?.length || starred}
+            >
               开始下载
             </Button>
           </Group>
