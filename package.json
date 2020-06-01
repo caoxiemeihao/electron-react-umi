@@ -11,6 +11,7 @@
     "---- webpack 构建 bundle.js electron-webpack ----": "---- webpack 构建 bundle.js ----",
     "electron:build": "node scripts/main-build --env=production",
     "electron:dev": "node scripts/main-build --env=development --watch",
+    "build-win": "cross-env APP_ROOT=src/render umi build && node scripts/main-build --env=production && electron-builder -w",
     "---- umi ---": "---- 自带的一些处理脚本 ----",
     "postinstall": "umi generate tmp",
     "prettier": "prettier --write '**/*.{js,jsx,tsx,ts,less,md,json}'",
@@ -32,7 +33,7 @@
     "files": [
       "!node_modules",
       "src/main",
-      "src/dist"
+      "src/render/dist"
     ],
     "win": {
       "target": [
@@ -50,7 +51,7 @@
       "output": "release"
     },
     "extends": null,
-    "productName": "caoxie",
+    "productName": "Cj工具",
     "nsis": {
       "oneClick": false,
       "perMachine": false,
@@ -85,12 +86,12 @@
     "concurrently": "^5.2.0",
     "cross-env": "^7.0.2",
     "dotenv": "^8.2.0",
-    "electron": "^9.0.0",
-    "electron-builder": "^22.6.1",
-    "electron-connect": "^0.6.3",
-    "electron-is-dev": "^1.2.0",
-    "electron-store": "^5.1.1",
-    "electron-updater": "^4.3.1",
+    "electron": "9.0.0",
+    "electron-builder": "22.6.1",
+    "electron-connect": "0.6.3",
+    "electron-is-dev": "1.2.0",
+    "electron-store": "5.1.1",
+    "electron-updater": "4.3.1",
     "lint-staged": "^10.0.7",
     "minimist": "^1.2.5",
     "mockjs": "^1.1.0",
