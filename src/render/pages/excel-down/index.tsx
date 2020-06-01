@@ -82,23 +82,33 @@ const ExcelDown: React.FC<any> = () => {
     }
   }, []);
 
-  const clickDownload = (restart = false) => {
-    for (let i = 0, l = Math.min(list.length, downMax); i < l; i++) {
-      const item = list[i];
-      if (!item.error && item.Attachment) {
-        execDownload(item); // 初始启动下载
-      } else {
-        console.warn('脏数据', item);
-      }
-    }
-    // dispatch({ type: 'xlsx/save', payload: { starred: true } }); // 开始下载
-    message.info('开始下载咯 😁');
-    restart ||
-      setTimeout(() => {
-        if (!starred) {
-          clickDownload(true); // 14 秒后木有反应，重试下载
+  const clickDownload = () => {
+    const down = () => {
+      for (let i = 0, l = Math.min(list.length, downMax); i < l; i++) {
+        const item = list[i];
+        if (item.Attachment) {
+          setTimeout(() => {
+            // 优化页面卡顿
+            execDownload(item); // 初始启动下载
+          }, 90);
+        } else {
+          console.warn('脏数据', item);
         }
-      }, 14000);
+      }
+      // dispatch({ type: 'xlsx/save', payload: { starred: true } }); // 开始下载
+      message.info('开始下载咯 😁');
+    };
+    const item = list.find(({ status }) => status !== undefined);
+    if (item) {
+      Modal.confirm({
+        content: '下载已经在进行了，你酱紫会导致重新开始下载任务 😀',
+        onOk() {
+          down();
+        },
+      });
+    } else {
+      down();
+    }
   };
 
   useEffect(() => {
@@ -236,7 +246,7 @@ const ExcelDown: React.FC<any> = () => {
               </Button>
               <Button
                 size="small"
-                disabled={!record.error}
+                // disabled={!record.error}
                 onClick={() => {
                   execDownload(record);
                 }}
@@ -258,10 +268,7 @@ const ExcelDown: React.FC<any> = () => {
         <div className="d-flex">
           <Group>
             <Button onClick={clickChooseFile}>选择 excel 文件</Button>
-            <Button
-              onClick={() => clickDownload()}
-              disabled={!list?.length || starred}
-            >
+            <Button onClick={clickDownload} disabled={!list?.length}>
               开始下载
             </Button>
           </Group>

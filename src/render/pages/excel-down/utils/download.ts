@@ -34,6 +34,19 @@ export enum FLAG {
   '!response200' = '!response200',
   response200 = 'response200',
 }
+
+/** WriteStream、ClientRequest、URL */
+let downHandles: Array<[fs.WriteStream, http.ClientRequest, string]> = [];
+const filterHandles = (url: string) => {
+  const item = downHandles.find(([, , _url]) => _url === url);
+  if (item) {
+    item[0].end();
+    item[0].destroy();
+    item[1].abort();
+  }
+  downHandles = downHandles.filter(([, , _url]) => _url !== url);
+};
+
 /**
  * ps: rx 用起来好吃力，乱用 ing... 😥
  */
@@ -45,9 +58,14 @@ export function download({ url, filename }: IProps) {
     // subject.complete();
     events.emit(DOWNLOAD_EVENT, [FLAG.params, url, '入参错误']);
   } else {
-    const stream = fs.createWriteStream(filename);
+    // 重复下载、把前面的关闭
+    const item = downHandles.filter(([, , _url]) => _url === url);
+    if (item[0]) {
+      filterHandles(url);
+    }
 
-    (url.startsWith('https') ? https : http)
+    const stream = fs.createWriteStream(filename);
+    const handle = (url.startsWith('https') ? https : http)
       .get(
         url,
         {
@@ -61,14 +79,14 @@ export function download({ url, filename }: IProps) {
             .on('error', err => {
               // subject.next([FLAG.err, url, err]);
               // subject.complete();
-              stream.close();
               events.emit(DOWNLOAD_EVENT, [FLAG.err, url, err]);
+              filterHandles(url);
             })
             .on('end', () => {
               // subject.next([FLAG.end, url, url]);
               // subject.complete();
-              stream.close();
               events.emit(DOWNLOAD_EVENT, [FLAG.end, url, url]);
+              filterHandles(url);
             })
             .on('data', chunk => {
               stream.write(chunk);
@@ -79,20 +97,22 @@ export function download({ url, filename }: IProps) {
       )
       .on('error', err => {
         // subject.next([FLAG.error, url, err]);
-        stream.close();
         events.emit(DOWNLOAD_EVENT, [FLAG.error, url, err]);
+        filterHandles(url);
       })
       .on('response', status => {
         if (status.statusCode !== 200) {
           // subject.next([FLAG['!response200'], url, status]);
           // subject.complete();
-          stream.close();
           events.emit(DOWNLOAD_EVENT, [FLAG['!response200'], url, status]);
+          filterHandles(url);
         } else {
           // subject.next([FLAG.response200, url, status]);
           events.emit(DOWNLOAD_EVENT, [FLAG.response200, url, status]);
         }
       });
+
+    downHandles.push([stream, handle, url]);
   }
 
   // return subject;
