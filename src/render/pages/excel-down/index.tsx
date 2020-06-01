@@ -120,14 +120,14 @@ const ExcelDown: React.FC<any> = () => {
         dispatch({
           type: 'xlsx/save',
           payload: {
-            downArr: downArr.filter(Attachment => Attachment !== url),
+            downArr: downArr.filter(_url => _url !== url),
           },
         });
       };
       const joinDwonArr = (url: string) => {
         dispatch({
           type: 'xlsx/save',
-          payload: { downArr: [...downArr, url] },
+          payload: { downArr: [...downArr.filter(_url => _url !== url), url] },
         });
       };
 
@@ -251,11 +251,11 @@ const ExcelDown: React.FC<any> = () => {
                   execDownload(record);
                 }}
               >
-                重新下载
+                下载
               </Button>
             </>
           ),
-          width: 160,
+          width: 140,
         },
       ],
     }),
