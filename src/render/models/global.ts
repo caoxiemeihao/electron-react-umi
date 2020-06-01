@@ -7,7 +7,7 @@ export interface GlobalState {
 }
 
 /** 切换主题 */
-function switchThem(theme: SiderTheme = store.get(store.theme)) {
+function switchThem(theme: SiderTheme = store.get(store.theme) ?? 'light') {
   document.body.classList.remove('dark');
   document.body.classList.remove('light');
   document.body.classList.add(theme);

@@ -35,7 +35,8 @@ export default {
   hash: true,
   // url 格式
   history: {
-    type: 'browser',
+    // type: 'browser', // file:// 模式下会出点儿问题 😥
+    type: 'hash',
   },
   // script、link 标签资源引入路径
   publicPath: './',

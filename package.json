@@ -35,6 +35,12 @@
       "src/main",
       "src/render/dist"
     ],
+    "mac": {
+      "target": [
+        "dmg",
+        "zip"
+      ]
+    },
     "win": {
       "target": [
         {
@@ -52,6 +58,7 @@
     },
     "extends": null,
     "productName": "Cj工具",
+    "appId": "38487730@qq.com",
     "nsis": {
       "oneClick": false,
       "perMachine": false,
