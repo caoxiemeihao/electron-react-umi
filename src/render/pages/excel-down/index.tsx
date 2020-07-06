@@ -90,7 +90,7 @@ const ExcelDown: React.FC<any> = () => {
           setTimeout(() => {
             // 优化页面卡顿
             execDownload(item); // 初始启动下载
-          }, 90);
+          }, i * 19);
         } else {
           console.warn('脏数据', item);
         }
