@@ -3,11 +3,12 @@
  */
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { Card, Alert, Button, message, Modal, notification, Badge } from 'antd';
+import { SmileOutlined } from '@ant-design/icons';
 import Table, { TableProps } from 'antd/lib/table';
 import { PresetStatusColorType } from 'antd/lib/_util/colors';
-import { ipcRenderer as ipc } from 'electron';
+import { ipcRenderer as ipc, Dialog, OpenDialogOptions } from 'electron';
 import { useSelector, useDispatch } from 'umi';
-import fs, { stat } from 'fs';
+import fs from 'fs';
 import path from 'path';
 import XLSX from 'xlsx';
 import { chooseFile, copyToClipboard } from '@/utils';
@@ -34,6 +35,13 @@ const STATUS_DICT: any = {
   processing: '正在下载',
 };
 
+const OPEN_DIR: { cmd: keyof Dialog; opts: OpenDialogOptions } = {
+  cmd: 'showOpenDialog',
+  opts: {
+    properties: ['openDirectory'],
+  },
+};
+
 const ExcelDown: React.FC<any> = () => {
   const dispatch = useDispatch();
   const xlsxState = useSelector<unknown, XlsxState>(({ xlsx }: any) => xlsx);
@@ -42,8 +50,15 @@ const ExcelDown: React.FC<any> = () => {
   const [downMax] = useState<number>(store.get(img_max) || 19);
   const [workbook, setWorkbook] = useState<XLSX.WorkBook>();
 
-  const openDialog = () => {
-    ipc.send('open-choose-download-path');
+  const openDialog = async () => {
+    // ipc.send('open-choose-download-path');
+    const res: { canceled: boolean; filePaths: string[] } = await ipc.invoke(
+      'dialog',
+      OPEN_DIR,
+    ); // 20-08-01 新设计的调用方式
+    if (!res.canceled) {
+      setSavePath(res.filePaths[0]);
+    }
   };
 
   const clickChooseFile = async () => {
@@ -65,6 +80,7 @@ const ExcelDown: React.FC<any> = () => {
           : json.quantity; /** 其實兩者都可以用 quantity */
       const target = path.join(savePath, String(dirName), String(sum));
       fs.existsSync(target) || fs.mkdirSync(target, { recursive: true });
+      console.log(target);
       const filename = path.join(
         target,
         json.OrderNumber +
@@ -197,6 +213,7 @@ const ExcelDown: React.FC<any> = () => {
     }
   }, [workbook]);
 
+  // @useless 被 invoke('dialog', opts) 写法代替
   useEffect(() => {
     const evnet = ipc.on('choosed-download-path', (event, save_path) => {
       setSavePath(save_path);
@@ -206,7 +223,23 @@ const ExcelDown: React.FC<any> = () => {
     };
   }, []);
 
+  // 同步保存路径到本地缓存
   useEffect(() => store.set(img_path, savePath), [savePath]);
+
+  // xlsx 使用提示
+  useEffect(() => {
+    if (process.env.NODE_ENV !== 'development') return;
+    const alert = sessionStorage.getItem('@alert/xlsx-test');
+    if (!alert) {
+      notification.open({
+        message: '使用提示',
+        description: '可以使用项目根下的 xlsx 文件中的文件测试下载 :)',
+        icon: <SmileOutlined style={{ color: APP_THEME }} />,
+        duration: null,
+      });
+      sessionStorage.setItem('@alert/xlsx-test', '1');
+    }
+  }, []);
 
   const tableProps: TableProps<TableItem> = useMemo(
     () => ({

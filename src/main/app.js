@@ -58,5 +58,14 @@ ipcMain.on('toggle-devtools', (event, bool) => toggleDevTools(bool));
 ipcMain.on('open-choose-download-path', event =>
   chooseDownloadPath(event.sender),
 );
+// 暴露 dialog 功能
+// render 中调用 pcRenderer.invoke('dialog', { cmd, opts })
+ipcMain.handle('dialog', async (event, args) => {
+  if (!(args instanceof Object)) return;
+  const { cmd, opts } = args;
+  // console.log(args);
+  const result = await dialog[cmd](win, opts);
+  return result;
+});
 
 app.whenReady().then(createw_indow);
