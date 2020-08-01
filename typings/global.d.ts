@@ -11,3 +11,6 @@ interface Window {
     isDev: boolean;
   };
 }
+
+/** 主题颜色 */
+declare const APP_THEME: string;

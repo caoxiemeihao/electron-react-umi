@@ -43,7 +43,7 @@ export default {
   // antd 主题配置
   theme: {
     '@primary-color': '#FF7700',
-    '@link-color': '#FF7700',
+    '@link-color': '#FF9900',
     '@font-family': '"futura-pt", sans-serif',
     '@font-size-base': '12px',
   },
@@ -52,5 +52,8 @@ export default {
     '@': resolvePath(''),
     '@@': resolvePath('.umi'),
     root: resolvePath('..', '..'), // 项目根目录
+  },
+  define: {
+    APP_THEME: '#FF7700',
   },
 };
