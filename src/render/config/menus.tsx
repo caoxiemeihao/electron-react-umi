@@ -6,6 +6,7 @@ import {
   AreaChartOutlined,
   FileImageOutlined,
   SearchOutlined,
+  FileExcelOutlined,
 } from '@ant-design/icons';
 
 export interface IMenu {
@@ -43,5 +44,10 @@ export default [
     path: '/source-utils',
     title: '搜品助手',
     icon: <SearchOutlined />,
+  },
+  {
+    path: '/excel-parse',
+    title: 'excel 解析',
+    icon: <FileExcelOutlined />,
   },
 ] as Array<IMenu>;
