@@ -2,6 +2,8 @@
  * excel 解析 Demo
  * https://www.cnblogs.com/sugar-tomato/p/4533977.html
  */
+import { join } from 'path';
+import { homedir } from 'os';
 import React, { useState, useEffect } from 'react';
 import { Button, message, Table, Divider } from 'antd';
 import { TableProps, ColumnType } from 'antd/lib/table';
@@ -29,7 +31,7 @@ export default () => {
     pagination: false,
     rowKey: (_, idx) => String(idx),
     size: 'small',
-    scroll: { x: 1200 },
+    // scroll: { x: 1200 },
   };
 
   const parseExcel = async (p: string) => {
@@ -39,6 +41,7 @@ export default () => {
       message.warn('excel 为空');
       return;
     }
+    // console.log(workBook)
     // console.log(sheet1)
 
     const titles: Array<[string, XLSX.CellObject]> = Object.entries(
@@ -82,7 +85,7 @@ export default () => {
     }
     const dataSource: Array<ExcelRecord> = [];
     for (let x = 1; x < +maxRow; x++) {
-      // x = 1：“第一行为标题行”
+      // x = 1：“下标 0 为标题行”
       const dataRecord: Record<string, any> = {};
       for (const dataItem of dataList) {
         dataRecord[dataItem[1].w as string] =
@@ -139,6 +142,27 @@ export default () => {
     oInput.click();
   };
 
+  const clickExport = (ev: any) => {
+    if (!dataSource.length) {
+      message.warn('没有要导出的数据');
+      return;
+    }
+    const workBook: XLSX.WorkBook = {
+      SheetNames: ['Sheet1'],
+      Sheets: { Sheet1: XLSX.utils.json_to_sheet(dataSource) },
+    };
+    // console.log(workBook)
+    try {
+      XLSX.writeFile(workBook, join(homedir(), 'Desktop', 'qcc.xlsx'), {
+        sheet: 'Sheet1',
+      });
+      message.success('导出成功');
+    } catch (error) {
+      message.error('导出失败');
+      console.log(error);
+    }
+  };
+
   // -------------------------------------------------------- test
   const documentDragOver = (ev: any) => {
     ev.preventDefault();
@@ -166,26 +190,38 @@ export default () => {
 
   return (
     <div className={styles.excelParse}>
-      <div style={{ marginBottom: 10 }}>
-        <Button
-          type={act ? 'primary' : undefined}
-          onDragEnter={dragEnter}
-          onDragOver={dragOver}
-          onDragLeave={dragLeave}
-          onDrop={drop}
-          onClick={clickUpload}
-        >
-          点击 / 拖文件到此处
-        </Button>
-        <span style={{ marginLeft: 7 }}>
-          {file ? (
-            file.path
-          ) : (
-            <span style={{ color: 'red' }}>
-              {'测试文件使用 【项目根目录/xlsx/公司信息.xlsx】'}
-            </span>
-          )}
-        </span>
+      <div
+        style={{
+          marginBottom: 10,
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+        }}
+      >
+        <div className="left">
+          <Button
+            type={act ? 'primary' : undefined}
+            onDragEnter={dragEnter}
+            onDragOver={dragOver}
+            onDragLeave={dragLeave}
+            onDrop={drop}
+            onClick={clickUpload}
+          >
+            点击 / 拖文件到此处
+          </Button>
+          <span style={{ marginLeft: 7 }}>
+            {file ? (
+              file.path
+            ) : (
+              <span style={{ color: 'red' }}>
+                {'测试文件使用 【项目根目录/xlsx/公司信息.xlsx】'}
+              </span>
+            )}
+          </span>
+        </div>
+        <div className="right">
+          <Button onClick={clickExport}>导出到桌面 qcc.xlsx</Button>
+        </div>
       </div>
 
       <Table {...tableProps} />
